@@ -21,8 +21,8 @@ import java.nio.file.*;
 
 //================== Change these paths =====================
 // Path watchPath = Paths.get("C:/Files/Results_0008_100m_Men25_A2.csv")
-Path watchPath = Paths.get("/home/malanmm/test/files/")
-String outputPath = "/home/malanmm/test/out/"
+Path watchPath = Paths.get("C:/Users/Jacques/Versus/Publish/BroadCast/")
+String outputPath = "C:/Users/Jacques/Versus/Publish/BroadCast/"
 //============================================================
 
 WatchService watchService = FileSystems.getDefault().newWatchService()
@@ -40,7 +40,7 @@ for ( ; ; ) {
     for ( WatchEvent<?> event: key.pollEvents()){
 	    //If files gets written to the folder from another application it is possible that this one will pick it up 
         // before it's done writing, resulting in half a read. In that case, cheat it with the below thread.sleep
-        //Thread.sleep(2000)
+        Thread.sleep(1000)
         String filename = event.context().getFileName().toString()
         String uri = watchPath.toString() + "/" + filename
         def xml = convertFile(uri)
@@ -70,7 +70,8 @@ def writeXmlToFile(String outputPath, String filename, String xml) {
     File directory = new File(outputPath)
     if(!directory.exists()) { directory.mkdir()}
 
-    File file = new File(outputPath  + filename.replace(".csv", ".xml"))
+    String outputFileName = filename.startsWith("Starter") ? "Starter" : "Result"
+    File file = new File(outputPath  + outputFileName + ".xml")
     file.write(xml)
 
     System.out.println("Done writing to " + file.toString())

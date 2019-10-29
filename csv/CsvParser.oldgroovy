@@ -19,9 +19,14 @@ class CsvParser {
     String convertToXml(){
 
         List<List<String>> lines = []
-        new File(this.uri).text.split(linebreakChars).each {
+		try {
+        def file = new File(this.uri).text
+		print file
+		file.split(linebreakChars).each {
             lines.add(it.split(separatorChar).collect {it[valueWrapperLength..-valueWrapperLength*2]})
         }
+		} catch(Exception e) { println "Exception " + e }
+		
 
         this.csvSections.each { CsvSection section ->
             section.headers = lines.get(0)
@@ -43,18 +48,16 @@ class CsvParser {
 
         def stringWriter = new StringWriter()
         def peopleBuilder = new MarkupBuilder(stringWriter)
-        
-        if(uri.contains("Result")) {
-        peopleBuilder.Result {
+        peopleBuilder.Event {
             this.csvSections.each { section ->
                 "${section.name}" {
                     if (section.lines.size() > 1) {
                         section.lines.each { List<String> l ->
-                            String surname = ""
+							String surname = ""
                             Item {
                                 section.headers.eachWithIndex { String header, int x ->
-                                    if(header == "Surname") surname = l[x]
-                                    else if(header == "Firstname") "Name"(l[x] + " " + surname)
+									if(header == "Surname") surname = l[x]
+									else if(header == "Firstname") "Name"(l[x] + " " + surname)
                                     else "${header}"(l[x])
                                 }
                             }
@@ -68,34 +71,6 @@ class CsvParser {
                     }
                 }
             }
-        }
-        }
-        else {
-        peopleBuilder.Starter {
-            this.csvSections.each { section ->
-                "${section.name}" {
-                    if (section.lines.size() > 1) {
-                        section.lines.each { List<String> l ->
-                            String surname = ""
-                            Item {
-                                section.headers.eachWithIndex { String header, int x ->
-                                    if(header == "Surname") surname = l[x]
-                                    else if(header == "Firstname") "Name"(l[x] + " " + surname)
-                                    else "${header}"(l[x])
-                                }
-                            }
-                        }
-                    }else{
-                        section.lines.each { List<String> l ->
-                            section.headers.eachWithIndex { String header, int x ->
-                                "${header}"(l[x])
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         }
         return stringWriter.toString()
     }
