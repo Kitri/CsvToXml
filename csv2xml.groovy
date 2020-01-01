@@ -11,9 +11,9 @@ import java.nio.file.*;
 *  Change the paths inside the lines below. Note that if the output folder is inside of the input folder it
 *  needs to exist before running the script, else the script will pick it up as a "new file" and fail
 *
-*  From commandline, navigate to the directory containing main.groovy. Make sure the csv folder is in the same directory
+*  From commandline, navigate to the directory containing csv2xml.groovy. Make sure the csv folder is in the same directory
 *  Run: 
-*     groovy main.groovy
+*     groovy csv2xml.groovy
 *
 *  To exit the script, escape with ctrl^C
 *
