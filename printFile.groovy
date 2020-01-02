@@ -82,8 +82,8 @@ String copyFile(String filename, String sourceUri, String destUri) {
 
 void printFile(String uri) {
     DocFlavor flavor = DocFlavor.INPUT_STREAM.AUTOSENSE;
-    PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
-    aset.add(MediaSizeName.ISO_A4);
+    // PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
+    // aset.add(MediaSizeName.ISO_A4);
     PrintService service = PrintServiceLookup.lookupDefaultPrintService(); 
 
     if (service != null) {
@@ -96,15 +96,16 @@ void printFile(String uri) {
             DocPrintJob job = service.createPrintJob();
             FileInputStream fis = new FileInputStream(uri);
             Doc doc = new SimpleDoc(fis, flavor, null);
-            job.print(doc, aset);
+            job.print(doc, null);
+            fis.close()
             } catch (FileNotFoundException fe) {
                 System.out.println("File not found while printing " + fe)
             } catch (PrintException e) {
                 System.out.println("Print exception " + e)
-            }
+            } 
 
         //------------ moet miskien die doen, nie seker nie ---------------
-        ejectPage(flavor, service)
+        // ejectPage(flavor, service)
 
     } else {
         System.out.println("No default print service found");
