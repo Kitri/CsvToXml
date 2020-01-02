@@ -104,7 +104,7 @@ void printFile(String uri) {
             }
 
         //------------ moet miskien die doen, nie seker nie ---------------
-        //ejectPage()
+        ejectPage(flavor)
 
     } else {
         System.out.println("No default print service found");
@@ -113,7 +113,7 @@ void printFile(String uri) {
 }
 
 // send FF to eject the page
-void ejectPage() {
+void ejectPage(DocFlavor flavor) {
     InputStream ff = new ByteArrayInputStream("\f".getBytes());
     Doc docff = new SimpleDoc(ff, flavor, null);
     DocPrintJob jobff = service.createPrintJob();
